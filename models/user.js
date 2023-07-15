@@ -2,6 +2,10 @@
 const {
   Model
 } = require('sequelize');
+import { sequelize } from './'
+import { DataTypes } from 'sequelize'
+
+const AccessLevel = require('./accesslevel')(sequelize, DataTypes)
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -14,8 +18,18 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   User.init({
+    accessId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: AccessLevel,
+        key: 'permissionLevel'
+      }
+    },
     name: DataTypes.STRING,
     email: DataTypes.STRING,
+    email_verified: DataTypes.BOOLEAN,
+    image: DataTypes.STRING,
     password: DataTypes.STRING
   }, {
     sequelize,
@@ -23,6 +37,7 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'users'
   });
 
+  User.belongsTo(AccessLevel, { foreignKey: 'accessId' });
   //User.sync({ alter: true })
   return User;
 };

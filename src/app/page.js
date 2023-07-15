@@ -1,16 +1,19 @@
 'use client'
-import Image from 'next/image'
-import CountdownTimer from './components/CountDownTimer'
-import { useState } from 'react'
 import axios from 'axios'
-import { useSession } from 'next-auth/react'
-export default function Home() {
-  const { data: session } = useSession({})
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+import CountdownTimer from './components/CountDownTimer'
 
-  const submit = async (e) => {
-    e.preventDefault()
+import { signOut, signIn, useSession } from 'next-auth/react'
+export default function Home() {
+  const { data: session, status } = useSession({})
+
+  const handleSubscribe = () => {
+    if (status == "unauthenticated") {
+      signIn()
+    } else {
+      axios.post("/api/registration").then(res => {
+        console.log(res)
+      })
+    }
   }
   return (
     <main className="flex gap-4 min-h-screen flex-col items-center justify-center p-24">
@@ -42,14 +45,10 @@ export default function Home() {
 
         <div className="text-3xl font-bold">20 Juillet 2023 20:00</div>
       </div>
-      <button className="text-2xl border border-white text-white bg-black hover:bg-white hover:text-black transition duration-300 font-bold py-2 px-4 rounded-lg">
+      <button onClick={handleSubscribe} className="text-2xl border border-white text-white bg-black hover:bg-white hover:text-black transition duration-300 font-bold py-2 px-4 rounded-lg">
         SUBSCRIBE NOW
       </button>
-      {/* <form onSubmit={submit} className='text-black'>
-        <input name='email' type='text' onChange={(e) => setEmail(e.target.value)} value={email} />
-        <input name='password' type='text' onChange={(e) => setPassword(e.target.value)} value={password} />
-        <button type='submit' className='bg-blue-500'>Submit</button>
-      </form> */}
+      <button onClick={signOut}>Signout</button>
       <div className='text-white'>{JSON.stringify(session)}</div>
 
     </main>

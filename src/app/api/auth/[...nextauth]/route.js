@@ -26,15 +26,46 @@ const handler = NextAuth({
                 const user = await User.findOne({ where: { email } });
                 if (user && user.password === password) {
                     // Return the user object if the credentials are valid
-                    return Promise.resolve(user);
+                    return user;
                 } else {
                     // Return null if the credentials are invalid
-                    return Promise.resolve(null);
+                    return null;
                 }
             }
         })
     ],
     adapter: SequelizeAdapter(sequelize),
+    secret: process.env.NEXT_AUTH_SECRET,
+    session: {
+        // Choose how you want to save the user session.
+        // The default is `"jwt"`, an encrypted JWT (JWE) stored in the session cookie.
+        // If you use an `adapter` however, we default it to `"database"` instead.
+        // You can still force a JWT session by explicitly defining `"jwt"`.
+        // When using `"database"`, the session cookie will only contain a `sessionToken` value,
+        // which is used to look up the session in the database.
+        strategy: "jwt",
+
+        // Seconds - How long until an idle session expires and is no longer valid.
+        maxAge: 30 * 24 * 60 * 60, // 30 days
+
+    },
+    callbacks: {
+        session: ({ session, token }) => {
+            console.log(token, session, user);
+            return {
+                ...session,
+                user: {
+                    ...session.user,
+                    id: token.sub,
+                },
+            }
+        },
+    },
+
+    pages: {
+        signIn: '/auth/signin',
+        signUp: '/auth/signup',
+    }
 });
 
-export { handler as GET, handler as POST }
+export { handler as GET, handler as POST, handler as authOptions }
