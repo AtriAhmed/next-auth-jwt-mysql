@@ -23,6 +23,6 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'users'
   });
 
-  User.sync({ alter: true })
+  //User.sync({ alter: true })
   return User;
 };

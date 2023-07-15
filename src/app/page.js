@@ -5,9 +5,7 @@ import { useState } from 'react'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
 export default function Home() {
-  const { data: session } = useSession({
-
-  })
+  const { data: session } = useSession({})
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
@@ -52,7 +50,7 @@ export default function Home() {
         <input name='password' type='text' onChange={(e) => setPassword(e.target.value)} value={password} />
         <button type='submit' className='bg-blue-500'>Submit</button>
       </form> */}
-      <div className='text-white'>{session?.user?.email}</div>
+      <div className='text-white'>{JSON.stringify(session)}</div>
 
     </main>
   )
