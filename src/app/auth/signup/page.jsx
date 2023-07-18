@@ -1,6 +1,8 @@
 "use client";
+import Loading from "@/app/components/Loading";
 import axios from "axios";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function RegisterForm() {
@@ -34,14 +36,16 @@ export default function RegisterForm() {
     };
 
     const input_style =
-        "form-control block w-full px-4 py-5 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none";
+    "w-full px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded transition duration-300 focus:ring-2 focus:ring-orange-400 focus:border-none outline-none";
 
+    if(loading) return <Loading />
     return (
-        <form onSubmit={onSubmit}>
+        <div className="flex min-h-screen justify-center items-center">
+        <form onSubmit={onSubmit} className="flex flex-col gap-6">
             {error ?
-                <p className="text-center bg-red-300 py-4 mb-6 rounded">{error.message}</p>
+                <p className="text-center bg-red-300 py-4  rounded">{error.message}</p>
                 : ""}
-            <div className="mb-6">
+            <div className="">
                 <input
                     required
                     type="name"
@@ -52,7 +56,7 @@ export default function RegisterForm() {
                     className={`${input_style}`}
                 />
             </div>
-            <div className="mb-6">
+            <div className="">
                 <input
                     required
                     type="email"
@@ -63,7 +67,7 @@ export default function RegisterForm() {
                     className={`${input_style}`}
                 />
             </div>
-            <div className="mb-6">
+            <div className="">
                 <input
                     required
                     type="password"
@@ -76,12 +80,22 @@ export default function RegisterForm() {
             </div>
             <button
                 type="submit"
-                style={{ backgroundColor: `${loading ? "#ccc" : "#3446eb"}` }}
-                className="inline-block px-7 py-4 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
+                className="w-full py-2 bg-orange-500 text-white font-bold text-sm uppercase rounded-full shadow-md hover:bg-orange-700 transition duration-150"
                 disabled={loading}
             >
                 {loading ? "loading..." : "Sign Up"}
             </button>
+
+            <div className="border-t justify-center pt-4 items-center flex gap-4 w-full">
+                or <Link
+                href="/auth/signin"
+                className="px-5 py-2 bg-orange-500 text-white font-bold text-sm uppercase rounded-full shadow-md hover:bg-orange-700 transition duration-150"
+                disabled={loading}
+            >
+                {loading ? "loading..." : "Sign In"}
+            </Link>
+            </div>
         </form>
+        </div>
     );
 };

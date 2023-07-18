@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     env: {
-        NEXTAUTH_SECRET: 'ahmed',
-    },
+        NEXT_AUTH_SECRET: 'ahmed',
+    }
 }
 
 module.exports = nextConfig

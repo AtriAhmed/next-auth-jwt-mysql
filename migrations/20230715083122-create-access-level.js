@@ -3,14 +3,11 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('AccessLevels', {
-      id: {
+      permissionLevel: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
-      },
-      permissionLevel: {
-        type: Sequelize.UUID
       },
       type: {
         type: Sequelize.STRING

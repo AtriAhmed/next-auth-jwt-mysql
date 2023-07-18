@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Registration.init({
-    userId: DataTypes.UUID
+    userId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Registration',
