@@ -6,14 +6,8 @@ import React, { Fragment, useEffect, useState } from 'react'
 
 export default function AdminNavbar() {
     const { data: session, status } = useSession({})
-    const [loading, setLoading] = useState(true)
-    
-    useEffect(()=>{
-    if(session)
-    if(session.user) setLoading(false)
-    },[status])
-    
-    if(loading) return <></>
+
+    if (status == "loading") return "";
 
   return (
     <Disclosure as="nav" className="bg-gray-800 fixed z-50 w-full">

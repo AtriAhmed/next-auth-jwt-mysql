@@ -10,15 +10,9 @@ import Link from "next/link";
 
 export default function Sidebar() {
   const { data: session, status } = useSession({})
-  const [loading, setLoading] = useState(true)
   const pathname = usePathname()
   
-  useEffect(()=>{
-  if(session)
-  if(session.user) setLoading(false)
-  },[status])
-  
-  if(loading) return <></>
+  if (status == "loading") return "";
 
   return (
     <div
@@ -29,7 +23,7 @@ export default function Sidebar() {
         <HomeIcon className="block h-6 w-6 flex-start" aria-hidden="true" />
         <span className="flex-end">Accueil</span>
       </Link>
-      {session.user.accessId >= 3 ? (
+      {session?.user?.accessId >= 3 ? (
         <>
           <Link href="/admin/users" className={`flex flex-row gap-4 p-4 duration-150 ${pathname?.startsWith("/admin/users") ? "bg-gray-700" : ""}`}>
             <UsersIcon className="block h-6 w-6 flex-start" aria-hidden="true" />

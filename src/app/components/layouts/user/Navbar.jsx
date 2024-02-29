@@ -23,14 +23,8 @@ export default function Navbar() {
     }
 
     const { data: session, status } = useSession({})
-    const [loading, setLoading] = useState(true)
-    
-    useEffect(()=>{
-    if(session)
-    if(session.user) setLoading(false)
-    },[status])
-    
-    if(loading) return <></>
+
+    if (status == "loading") return "";
 
 
   return (
